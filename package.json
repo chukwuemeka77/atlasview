@@ -9,18 +9,29 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "axios": "^1.6.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.16.0",
-    "@walletconnect/web3-provider": "^1.8.0"
+    "@cosmjs/proto-signing": "^0.37.0",
+    "@cosmjs/stargate": "^0.37.0",
+    "@keplr-wallet/types": "^0.12.285",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@walletconnect/web3-provider": "^1.8.0",
+    "axios": "^1.13.2",
+    "ethers": "^6.15.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.1",
+    "recoil": "^0.7.7",
+    "viem": "^2.38.6",
+    "wagmi": "^2.19.2",
+    "web3modal": "^1.9.12"
   },
   "devDependencies": {
-    "typescript": "^5.2.2",
-    "vite": "^5.1.7",
-    "tailwindcss": "^3.3.3",
-    "postcss": "^8.4.30",
-    "autoprefixer": "^10.4.14"
+    "@vitejs/plugin-react": "^5.1.0",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.18",
+    "typescript": "^5.9.3",
+    "vite": "^5.4.21"
   },
   "description": "This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.",
   "main": "eslint.config.js",

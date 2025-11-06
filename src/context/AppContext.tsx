@@ -1,55 +1,35 @@
-import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
+// src/context/AppContext.tsx
+import React, { createContext, useContext, useState, ReactNode } from "react";
+import { WalletProvider } from "./WalletContext";
+import { XPProvider } from "./XPContext";
 
-interface Wallet {
-  address: string;
-  connected: boolean;
+interface AppContextType {
+  theme: string;
+  setTheme: (theme: string) => void;
+  isSidebarOpen: boolean;
+  toggleSidebar: () => void;
 }
 
-interface WalletContextProps {
-  wallet: Wallet | null;
-  connectWallet: () => Promise<void>;
-  disconnectWallet: () => void;
-}
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const WalletContext = createContext<WalletContextProps | undefined>(undefined);
+export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [theme, setTheme] = useState("light");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-export const WalletProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [wallet, setWallet] = useState<Wallet | null>(null);
-
-  const connectWallet = async () => {
-    try {
-      if (!(window as any).keplr) {
-        alert("Keplr wallet not detected!");
-        return;
-      }
-
-      // Request Keplr to connect
-      await (window as any).keplr.enable("atlas-chain"); // replace with your chain ID
-      const offlineSigner = (window as any).getOfflineSigner("atlas-chain");
-      const accounts = await offlineSigner.getAccounts();
-
-      if (accounts.length > 0) {
-        setWallet({ address: accounts[0].address, connected: true });
-        console.log("Wallet connected:", accounts[0].address);
-      }
-    } catch (err) {
-      console.error("Keplr connection error:", err);
-    }
-  };
-
-  const disconnectWallet = () => {
-    setWallet(null);
-  };
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   return (
-    <WalletContext.Provider value={{ wallet, connectWallet, disconnectWallet }}>
-      {children}
-    </WalletContext.Provider>
+    <AppContext.Provider value={{ theme, setTheme, isSidebarOpen, toggleSidebar }}>
+      {/* 👇 Wrap nested contexts here */}
+      <WalletProvider>
+        <XPProvider>{children}</XPProvider>
+      </WalletProvider>
+    </AppContext.Provider>
   );
 };
 
-export const useWallet = () => {
-  const context = useContext(WalletContext);
-  if (!context) throw new Error("useWallet must be used within WalletProvider");
+export const useAppContext = () => {
+  const context = useContext(AppContext);
+  if (!context) throw new Error("useAppContext must be used within AppProvider");
   return context;
 };
